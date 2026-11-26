@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#e07a2f">
+<title>Bowie's Weekend Schedule</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23e07a2f'/%3E%3Cg fill='%23fff'%3E%3Cellipse cx='32' cy='41' rx='11' ry='9'/%3E%3Cellipse cx='18' cy='29' rx='4.5' ry='6'/%3E%3Cellipse cx='46' cy='29' rx='4.5' ry='6'/%3E%3Cellipse cx='26' cy='19' rx='4' ry='5.5'/%3E%3Cellipse cx='38' cy='19' rx='4' ry='5.5'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+:root {
+  --ink: #1f2a37;
+  --muted: #5b6676;
+  --line: #e9e2d6;
+  --bg: #fbf8f3;
+  --card: #ffffff;
+  --orange: #e07a2f;
+  --orange-soft: #fbe6d4;
+  --teal: #2d7d7a;
+  --teal-soft: #d9efed;
+  --plum: #6b4c8a;
+  --plum-soft: #ebe3f3;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--ink); background: var(--bg);
+  font-size: 16px; line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.wrap { max-width: 560px; margin: 0 auto; padding: 0 16px; }
+
+/* Hero */
+.hero {
+  background: var(--orange); color: #fff;
+  padding: calc(28px + env(safe-area-inset-top)) 0 26px;
+  border-radius: 0 0 24px 24px;
+}
+.hero .wrap { display: flex; align-items: center; gap: 14px; }
+.paw { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,.2); display: grid; place-items: center; flex: none; }
+.hero h1 { font-size: 26px; line-height: 1.1; font-weight: 800; letter-spacing: -.3px; }
+.hero p { opacity: .92; font-size: 15px; margin-top: 4px; }
+
+/* Nav */
+nav {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(251,248,243,.94); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+nav .wrap { display: flex; gap: 8px; padding-top: 10px; padding-bottom: 10px; }
+nav a {
+  flex: 1; text-align: center; text-decoration: none; font-weight: 700; font-size: 14px;
+  padding: 9px 6px; border-radius: 999px; color: var(--ink); background: #fff; border: 1px solid var(--line);
+}
+nav a.sched { color: var(--orange); }
+nav a.faq { color: var(--teal); }
+nav a.house { color: var(--plum); }
+
+section { padding-top: 22px; }
+h2 {
+  font-size: 13px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;
+  display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+h2 .dot { width: 10px; height: 10px; border-radius: 50%; }
+.hint { color: var(--muted); font-size: 13px; margin: -6px 0 12px; }
+
+/* Day pill */
+.day {
+  display: inline-block; color: #fff; font-weight: 800; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 999px; background: var(--orange); margin: 4px 0 10px;
+}
+.day.sat { background: var(--teal); }
+
+/* Timeline steps */
+.step {
+  display: flex; gap: 12px; background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; padding: 14px; margin-bottom: 10px; cursor: pointer;
+  -webkit-tap-highlight-color: transparent; transition: opacity .2s, background .2s;
+}
+.step .left { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: none; width: 58px; }
+.time { font-weight: 800; font-size: 15px; white-space: nowrap; }
+.check {
+  width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--orange);
+  background: var(--orange-soft); display: grid; place-items: center;
+}
+.sat-block .check { border-color: var(--teal); background: var(--teal-soft); }
+.check svg { opacity: 0; transition: opacity .15s; }
+.step.done { opacity: .55; background: #f3efe8; }
+.step.done .check { background: var(--orange); }
+.sat-block .step.done .check { background: var(--teal); }
+.step.done .check svg { opacity: 1; }
+.step.done .what { text-decoration: line-through; }
+.what { font-weight: 700; font-size: 17px; margin-bottom: 2px; }
+.step p { font-size: 15px; }
+.step p + p { margin-top: 4px; }
+.opt { color: var(--muted); font-style: italic; }
+
+/* Cards */
+.card {
+  display: flex; gap: 12px; border-radius: 14px; padding: 14px; margin-bottom: 10px;
+}
+.ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+.card h3 { font-size: 16px; font-weight: 800; margin-bottom: 2px; }
+.card p { font-size: 15px; }
+.faq .card { background: var(--teal-soft); }
+.faq .ic { background: var(--teal); }
+.house .card { background: var(--card); border: 1px solid var(--line); }
+.house .ic { background: var(--plum); }
+.house .card.pizza { background: var(--plum-soft); border-color: #d6c6e6; }
+.addr { font-weight: 800; font-size: 16px; margin-top: 2px; }
+.btn {
+  margin-top: 10px; display: inline-flex; align-items: center; gap: 6px;
+  font: inherit; font-size: 14px; font-weight: 700; color: #fff; background: var(--plum);
+  border: 0; border-radius: 999px; padding: 8px 14px; cursor: pointer;
+}
+
+.reset {
+  display: block; margin: 4px auto 0; font: inherit; font-size: 13px; color: var(--muted);
+  background: none; border: 0; text-decoration: underline; cursor: pointer; padding: 6px;
+}
+footer { text-align: center; color: var(--muted); font-size: 14px; padding: 26px 0 34px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="paw">
+      <svg width="32" height="32" viewBox="0 0 64 64" fill="#fff" aria-hidden="true">
+        <ellipse cx="32" cy="42" rx="14" ry="12"/>
+        <ellipse cx="15" cy="27" rx="6" ry="8" transform="rotate(-20 15 27)"/>
+        <ellipse cx="49" cy="27" rx="6" ry="8" transform="rotate(20 49 27)"/>
+        <ellipse cx="25" cy="15" rx="5.5" ry="7.5"/>
+        <ellipse cx="39" cy="15" rx="5.5" ry="7.5"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Bowie's Weekend Schedule</h1>
+      <p>A quick guide for Dan: walks, meals, bedtime and house notes</p>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a href="#schedule" class="sched">Schedule</a>
+    <a href="#faq" class="faq">Bowie FAQ</a>
+    <a href="#house" class="house">House</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- SCHEDULE -->
+  <section id="schedule">
+    <h2><span class="dot" style="background:var(--orange)"></span>The Schedule</h2>
+    <p class="hint">Tap a step to check it off.</p>
+
+    <div class="day">Friday</div>
+    <div class="fri-block">
+      <div class="step" data-id="fri-12">
+        <div class="left"><div class="time">12 PM</div><div class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div></div>
+        <div>
+          <div class="what">Arrive &amp; potty break</div>
+          <p>When you get to us, take Bowie out to the bathroom.</p>
+          <p class="opt">If you're up for it, a little walk.</p>
+        </div>
+      </div>
+      <div class="step" data-id="fri-330">
+        <div class="left"><div class="time">3:30 PM</div><div class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div></div>
+        <div>
+          <div class="what">Dinner</div>
+          <p>His bowl is in the freezer; food bowls are in the basement by the dartboard. Drop the frozen bowl in the <b>left</b> bowl.</p>
+        </div>
+      </div>
+      <div class="step" data-id="fri-415">
+        <div class="left"><div class="time">4:15 PM</div><div class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div></div>
+        <div>
+          <div class="what">Walk or fetch</div>
+          <p>After he finishes eating we usually walk or play fetch.</p>
+          <p class="opt">Another walk if you're up for it.</p>
+        </div>
+      </div>
+      <div class="step" data-id="fri-930">
+        <div class="left"><div class="time">9:30 PM</div><div class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div></div>
+        <div>
+          <div class="what">Bedtime routine</div>
+          <p>Before you go to bed, take him out to the bathroom.</p>
+          <p>Back inside, head downstairs and give him a <b>big bone</b> (bag on the game table). Make sure his water bowl is full.</p>
+          <p class="opt">He usually sleeps in the basement but can sleep wherever.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day sat">Saturday</div>
+    <div class="sat-block">
+      <div class="step" data-id="sat-8">
+        <div class="left"><div class="time">8 AM</div><div class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div></div>
+        <div>
+          <div class="what">Morning potty &amp; breakfast</div>
+          <p>Whenever you get up, take him out to the bathroom.</p>
+          <p>Feed him <b>3 scoops</b> of food in the <b>gray slow-feeder bowl</b> and set it in the bowls by the dartboard again.</p>
+        </div>
+      </div>
+    </div>
+    <button class="reset" id="reset" type="button">Clear checkmarks</button>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="faq">
+    <h2><span class="dot" style="background:var(--teal)"></span>Bowie FAQ</h2>
+
+    <div class="card">
+      <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2s7 8 7 13a7 7 0 0 1-14 0c0-5 7-13 7-13z"/></svg></div>
+      <div><h3>Water</h3><p>Check his water bowl in the basement every so often. Feel free to fill it at the basement bathroom sink.</p></div>
+    </div>
+    <div class="card">
+      <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><circle cx="6" cy="6" r="3"/><path d="M8 8c4 4 2 8 10 12"/><circle cx="18" cy="20" r="1.5" fill="#fff"/></svg></div>
+      <div><h3>Leashes</h3><p><b>Walks:</b> harness + metal leash.<br><b>Potty breaks:</b> white retractable leash, so you don't have to follow him while he sniffs for a spot.</p></div>
+    </div>
+    <div class="card">
+      <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M9 8V5h6v3"/></svg></div>
+      <div><h3>Packing: 2 bags</h3><p><b>Bag 1</b> for your parents: food, bowls, etc.<br><b>Bag 2</b> for daycare: food &amp; toys, for when your parents drop him off on Sunday.</p></div>
+    </div>
+  </section>
+
+  <!-- HOUSE -->
+  <section id="house" class="house">
+    <h2><span class="dot" style="background:var(--plum)"></span>House Notes</h2>
+
+    <div class="card">
+      <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+      <div><h3>Door lock</h3><p>Your code works all weekend; the door auto-locks after a minute or two. When you leave for the last time, please confirm it locked. If not, close the door and hit the <b>lock icon</b> on the pad.</p></div>
+    </div>
+    <div class="card">
+      <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v3M8 21c-3 0-4-6-4-9a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 3-1 9-4 9-1.5 0-2.5-1-4-1s-2.5 1-4 1z"/></svg></div>
+      <div><h3>Help yourself to food</h3><p>Fridge, the pantry in the closet by the garage door, or the cabinet right of the fridge. That cabinet has a <b>child lock</b>: pull it open an inch or two, reach into the top right, push the bar down.</p></div>
+    </div>
+    <div class="card">
+      <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h11v6a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10h2a2 2 0 0 1 0 4h-2"/></svg></div>
+      <div><h3>Drinks</h3><p>Anything in the fridge. Coffee is by the fridge; K-cups in the Santa, cups in the cabinet above the Keurig.</p></div>
+    </div>
+    <div class="card">
+      <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></div>
+      <div><h3>Garbage bins</h3><p>If the truck comes by and the bins are empty, please roll them up and leave them by the garage.</p></div>
+    </div>
+    <div class="card">
+      <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M6 4h8v6H6zM4 10h16a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6zM9 16l-1 5h8l-1-5"/></svg></div>
+      <div><h3>Upstairs toilet</h3><p>Before you leave, make sure the handle is <b>up</b> so it doesn't sound like it's running.</p></div>
+    </div>
+    <div class="card pizza">
+      <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"><path d="M12 21L3 5a14 14 0 0 1 18 0z"/><circle cx="10" cy="9" r="1.2" fill="#fff"/><circle cx="14" cy="12" r="1.2" fill="#fff"/></svg></div>
+      <div>
+        <h3>Domino's Takeout</h3>
+        <p>Home address:</p>
+        <p class="addr" id="addr">13603 142nd Ave N, Dayton MN 55327</p>
+        <button class="btn" id="copy" type="button">Copy address</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>Thanks for taking care of Bowie! &#128062;</footer>
+</main>
+
+<script>
+(function () {
+  var KEY = 'bowie-checked';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  var steps = document.querySelectorAll('.step');
+  steps.forEach(function (el) {
+    var id = el.getAttribute('data-id');
+    if (state[id]) el.classList.add('done');
+    el.addEventListener('click', function () {
+      state[id] = !el.classList.contains('done');
+      el.classList.toggle('done', state[id]);
+      save();
+    });
+  });
+
+  document.getElementById('reset').addEventListener('click', function () {
+    state = {}; save();
+    steps.forEach(function (el) { el.classList.remove('done'); });
+  });
+
+  var btn = document.getElementById('copy');
+  btn.addEventListener('click', function () {
+    var text = document.getElementById('addr').textContent;
+    function done() { btn.textContent = 'Copied!'; setTimeout(function () { btn.textContent = 'Copy address'; }, 1600); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () {});
+    } else {
+      var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+      ta.select(); try { document.execCommand('copy'); done(); } catch (e) {} document.body.removeChild(ta);
+    }
+  });
+})();
+</script>
+</body>
+</html>
