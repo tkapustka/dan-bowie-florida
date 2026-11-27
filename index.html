@@ -120,7 +120,46 @@ h2 .dot { width: 10px; height: 10px; border-radius: 50%; }
   display: block; margin: 4px auto 0; font: inherit; font-size: 13px; color: var(--muted);
   background: none; border: 0; text-decoration: underline; cursor: pointer; padding: 6px;
 }
-footer { text-align: center; color: var(--muted); font-size: 14px; padding: 26px 0 34px; }
+footer { text-align: center; padding: 30px 0 44px; overflow: hidden; }
+.thanks-card {
+  position: relative; background: var(--orange); color: #fff; border-radius: 20px;
+  padding: 26px 18px 22px; overflow: hidden;
+  animation: pop-in .7s cubic-bezier(.2,1.4,.4,1) both;
+}
+.thanks-card.hidden { opacity: 0; transform: scale(.85); animation: none; }
+.thanks-card h2.thanks {
+  display: block; font-size: 30px; line-height: 1.15; font-weight: 800; letter-spacing: -.3px;
+  text-transform: none; margin: 0;
+}
+.thanks .word { display: inline-block; animation: wave 2.4s ease-in-out infinite; }
+.thanks .word:nth-child(2) { animation-delay: .12s; }
+.thanks .word:nth-child(3) { animation-delay: .24s; }
+.thanks .word:nth-child(4) { animation-delay: .36s; }
+.thanks .word:nth-child(5) { animation-delay: .48s; }
+.thanks-card .sub2 { font-size: 16px; opacity: .92; margin-top: 6px; }
+.big-paw { display: inline-block; font-size: 44px; margin-top: 10px; animation: wiggle 1.6s ease-in-out infinite; transform-origin: 50% 80%; }
+.trail { position: absolute; left: 0; right: 0; bottom: 6px; height: 20px; pointer-events: none; }
+.trail span {
+  position: absolute; bottom: 0; left: -30px; font-size: 16px; opacity: 0;
+  animation: walk 6s linear infinite;
+}
+.trail span:nth-child(2) { animation-delay: .5s; bottom: 8px; }
+.trail span:nth-child(3) { animation-delay: 1s; }
+.trail span:nth-child(4) { animation-delay: 1.5s; bottom: 8px; }
+.heart { position: absolute; font-size: 18px; opacity: 0; animation: float-up 3.5s ease-in infinite; }
+.heart.h1 { left: 12%; animation-delay: 0s; }
+.heart.h2 { left: 82%; animation-delay: 1.2s; }
+.heart.h3 { left: 48%; animation-delay: 2.3s; }
+@keyframes pop-in { from { opacity: 0; transform: scale(.85) translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes wave { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-7px); } }
+@keyframes wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-14deg) scale(1.08); } 75% { transform: rotate(14deg) scale(1.08); } }
+@keyframes walk { 0% { left: -30px; opacity: 0; } 8% { opacity: .55; } 85% { opacity: .55; } 100% { left: 105%; opacity: 0; } }
+@keyframes float-up { 0% { bottom: 10px; opacity: 0; transform: scale(.6); } 20% { opacity: .9; } 100% { bottom: 85%; opacity: 0; transform: scale(1.2) rotate(12deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .thanks-card, .thanks .word, .big-paw, .trail span, .heart { animation: none !important; }
+  .trail, .heart { display: none; }
+  .thanks-card.hidden { opacity: 1; transform: none; }
+}
 </style>
 </head>
 <body>
@@ -260,7 +299,17 @@ footer { text-align: center; color: var(--muted); font-size: 14px; padding: 26px
     </div>
   </section>
 
-  <footer>Thanks for taking care of Bowie! &#128062;</footer>
+  <footer>
+    <div class="thanks-card hidden" id="thanks">
+      <span class="heart h1" aria-hidden="true">&#10084;&#65039;</span>
+      <span class="heart h2" aria-hidden="true">&#129380;</span>
+      <span class="heart h3" aria-hidden="true">&#10084;&#65039;</span>
+      <h2 class="thanks"><span class="word">Thanks</span> <span class="word">for</span> <span class="word">taking</span> <span class="word">care</span> <span class="word">of&nbsp;Bowie!</span></h2>
+      <div class="sub2">He's lucky to have you, Dan.</div>
+      <div class="big-paw" aria-hidden="true">&#128062;</div>
+      <div class="trail" aria-hidden="true"><span>&#128062;</span><span>&#128062;</span><span>&#128062;</span><span>&#128062;</span></div>
+    </div>
+  </footer>
 </main>
 
 <script>
@@ -285,6 +334,19 @@ footer { text-align: center; color: var(--muted); font-size: 14px; padding: 26px
     state = {}; save();
     steps.forEach(function (el) { el.classList.remove('done'); });
   });
+
+  // Pop the thank-you card in when it scrolls into view
+  var thanks = document.getElementById('thanks');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { thanks.classList.remove('hidden'); io.disconnect(); }
+      });
+    }, { threshold: 0.3 });
+    io.observe(thanks);
+  } else {
+    thanks.classList.remove('hidden');
+  }
 
   var btn = document.getElementById('copy');
   btn.addEventListener('click', function () {
