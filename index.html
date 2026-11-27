@@ -155,14 +155,72 @@ footer { text-align: center; padding: 30px 0 44px; overflow: hidden; }
 @keyframes wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-14deg) scale(1.08); } 75% { transform: rotate(14deg) scale(1.08); } }
 @keyframes walk { 0% { left: -30px; opacity: 0; } 8% { opacity: .55; } 85% { opacity: .55; } 100% { left: 105%; opacity: 0; } }
 @keyframes float-up { 0% { bottom: 10px; opacity: 0; transform: scale(.6); } 20% { opacity: .9; } 100% { bottom: 85%; opacity: 0; transform: scale(1.2) rotate(12deg); } }
+/* Running golden retriever on load */
+#runner {
+  position: fixed; left: 0; top: 38%; z-index: 50; pointer-events: none;
+  width: 170px; transform: translateX(-200px);
+  animation: run-across 3.2s cubic-bezier(.45,.05,.55,.95) .35s forwards;
+}
+#runner .bob { animation: bob .32s ease-in-out infinite; }
+#runner svg { display: block; width: 100%; height: auto; overflow: visible; }
+#runner .leg { transform-box: fill-box; transform-origin: 50% 8%; }
+#runner .leg.a { animation: stride .32s ease-in-out infinite; }
+#runner .leg.b { animation: stride .32s ease-in-out infinite reverse; }
+#runner .tail { transform-box: fill-box; transform-origin: 100% 100%; animation: wag .2s ease-in-out infinite alternate; }
+#runner .ear { transform-box: fill-box; transform-origin: 50% 0%; animation: flop .32s ease-in-out infinite; }
+#runner .puff { position: absolute; bottom: 2px; left: 10px; width: 14px; height: 14px; border-radius: 50%; background: #e9dcc6; opacity: 0; animation: puff .64s ease-out infinite; }
+#runner .puff.p2 { animation-delay: .32s; left: 30px; }
+@keyframes run-across {
+  0% { transform: translateX(-200px); opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateX(calc(100vw + 40px)); opacity: 0; }
+}
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+@keyframes stride { 0% { transform: rotate(32deg); } 50% { transform: rotate(-32deg); } 100% { transform: rotate(32deg); } }
+@keyframes wag { from { transform: rotate(-14deg); } to { transform: rotate(16deg); } }
+@keyframes flop { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-18deg); } }
+@keyframes puff { 0% { opacity: .8; transform: scale(.4) translateX(0); } 100% { opacity: 0; transform: scale(1.6) translateX(-26px); } }
 @media (prefers-reduced-motion: reduce) {
   .thanks-card, .thanks .word, .big-paw, .trail span, .heart { animation: none !important; }
   .trail, .heart { display: none; }
   .thanks-card.hidden { opacity: 1; transform: none; }
+  #runner { display: none; }
 }
 </style>
 </head>
 <body>
+
+<div id="runner" aria-hidden="true">
+  <span class="puff"></span><span class="puff p2"></span>
+  <div class="bob">
+  <svg viewBox="0 0 200 130">
+    <!-- far legs -->
+    <g fill="#b9862f">
+      <rect class="leg b" x="58" y="70" width="11" height="40" rx="5.5"/>
+      <rect class="leg a" x="128" y="72" width="11" height="40" rx="5.5"/>
+    </g>
+    <!-- tail -->
+    <path class="tail" d="M8 30 C 14 50, 28 58, 46 58 L 48 66 C 26 68, 6 56, 8 30 Z" fill="#d49a3a"/>
+    <!-- body -->
+    <ellipse cx="92" cy="64" rx="52" ry="24" fill="#e2ab4a"/>
+    <ellipse cx="132" cy="68" rx="20" ry="22" fill="#e9b85c"/>
+    <!-- near legs -->
+    <g fill="#e2ab4a">
+      <rect class="leg a" x="50" y="70" width="13" height="42" rx="6.5"/>
+      <rect class="leg b" x="120" y="74" width="13" height="40" rx="6.5"/>
+    </g>
+    <!-- neck + head -->
+    <path d="M128 52 C 132 34, 142 26, 152 26 L 158 50 C 150 60, 138 66, 128 62 Z" fill="#e2ab4a"/>
+    <circle cx="156" cy="36" r="20" fill="#e9b85c"/>
+    <ellipse cx="176" cy="45" rx="17" ry="10" fill="#f0c674"/>
+    <circle cx="191" cy="41" r="4.5" fill="#3a2a1c"/>
+    <path d="M178 54 q 4 10 10 6 q -2 -5 -4 -8 z" fill="#e8737a"/>
+    <circle cx="160" cy="31" r="3" fill="#3a2a1c"/>
+    <circle cx="161" cy="30" r="1" fill="#fff"/>
+    <ellipse class="ear" cx="146" cy="40" rx="8" ry="15" fill="#c98e33"/>
+  </svg>
+  </div>
+</div>
 
 <header class="hero">
   <div class="wrap">
@@ -333,6 +391,12 @@ footer { text-align: center; padding: 30px 0 44px; overflow: hidden; }
   document.getElementById('reset').addEventListener('click', function () {
     state = {}; save();
     steps.forEach(function (el) { el.classList.remove('done'); });
+  });
+
+  // Remove the running dog once he's gone
+  var runner = document.getElementById('runner');
+  if (runner) runner.addEventListener('animationend', function (e) {
+    if (e.animationName === 'run-across') runner.parentNode.removeChild(runner);
   });
 
   // Pop the thank-you card in when it scrolls into view
